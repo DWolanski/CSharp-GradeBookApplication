@@ -20,26 +20,26 @@ namespace GradeBook.GradeBooks
             }
 
             var twentyPercentOfStudents = Students.Count * 20 / 100;
-            var rankedStudents = new Dictionary<char, List<Student>> 
+            var rankedStudents = new SortedDictionary<char, List<Student>>
             {
                 ['A'] = new List<Student>(),
                 ['B'] = new List<Student>(),
                 ['C'] = new List<Student>(),
                 ['D'] = new List<Student>(),
-                ['E'] = new List<Student>(),
+                ['F'] = new List<Student>(),
             };
 
             var rankToStudentsMapEnumerator = rankedStudents.GetEnumerator();
+            rankToStudentsMapEnumerator.MoveNext();
 
             foreach(var student in Students.OrderByDescending(x => x.AverageGrade))
             {
-                var currentRank = rankToStudentsMapEnumerator.Current;
-                if (currentRank.Value.Count >= twentyPercentOfStudents)
+                if (rankToStudentsMapEnumerator.Current.Value.Count.Equals(twentyPercentOfStudents))
                 {
                     rankToStudentsMapEnumerator.MoveNext();
                 }
 
-                currentRank.Value.Add(student);
+                rankToStudentsMapEnumerator.Current.Value.Add(student);
             }
 
             foreach(var rank in rankedStudents)
